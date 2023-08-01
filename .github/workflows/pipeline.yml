@@ -36,6 +36,22 @@ jobs:
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Discord notify Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'pull_request' && failure() }}
+        with:
+          severity: error
+          details: commit ${{ github.event.pull_request.base.repo.html_url }}/commit/${{ github.event.pull_request.head.sha }} by ${{ github.triggering_actor }} broke the build
+          text: Build failed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Discord notify Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits.*.message), '#skip') && success() }}
+        with:
+          severity: info
+          details: to https://silent-snow-6583.fly.dev/ by ${{ github.triggering_actor }}
+          text: A new version of Pokedex deployed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
