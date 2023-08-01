@@ -17,7 +17,6 @@ primary_region = "sin"
     NODE_VERSION = "16.20.1"
 
 [http_service]
-  http_checks = []
   internal_port = 8080
   force_https = true
   auto_stop_machines = true
@@ -30,3 +29,9 @@ primary_region = "sin"
 
 [experimental]
   auto_rollback = true
+
+[[services.tcp_checks]]
+  grace_period = "1s"
+  interval = "15s"
+  restart_limit = 0
+  timeout = "2s"
