@@ -29,7 +29,3 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-      - name: fetch test
-        run: git fetch
-      - name: log test
-        run: git log origin/${{ github.event.pull_request.base.ref }}
