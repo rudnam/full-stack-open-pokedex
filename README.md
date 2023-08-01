@@ -19,5 +19,3 @@ Start by running `npm install` inside the project folder
 `Dockerfile` has been modified according to https://community.fly.io/t/e-unable-to-locate-package-python-is-python3/12445/4
 
 - `python-is-python3` -> `python`
-
-test commits
