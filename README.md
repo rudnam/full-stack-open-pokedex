@@ -20,4 +20,4 @@ Start by running `npm install` inside the project folder
 
 - `python-is-python3` -> `python`
 
-test commit
+test commits
