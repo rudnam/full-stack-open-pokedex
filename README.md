@@ -13,3 +13,7 @@ Start by running `npm install` inside the project folder
 `npm run eslint` to run eslint
 `npm run build` to make a production build
 `npm run start-prod` to run your production build
+
+## Note
+
+`Dockerfile` has been modified according to https://community.fly.io/t/e-unable-to-locate-package-python-is-python3/12445/4

@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for silent-snow-6583 on 2023-08-01T09:14:30+08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "silent-snow-6583"
+primary_region = "sin"
+
+[deploy]
+  release_command = "npm run build"
+
+[processes]
+  app = "node app.js"
+
+[build]
+  [build.args]
+    NODE_VERSION = "16.20.1"
+
+[http_service]
+  http_checks = []
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[env]
+  PORT = "8080"
+
+[experimental]
+  auto_rollback = true
