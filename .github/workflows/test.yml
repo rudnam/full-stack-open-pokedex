@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+  # remove pull_request after finalizing
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
 
 jobs:
   a_test_job:
