@@ -52,3 +52,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+  discord_notify_success:
+    needs: [tag_release]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Discord notify Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: to https://silent-snow-6583.fly.dev/ by ${{ github.triggering_actor }}
+          text: A new version of Pokedex deployed
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
