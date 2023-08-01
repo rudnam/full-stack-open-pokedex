@@ -31,11 +31,6 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:5000
-      - name: deploy
-        if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits.*.message), '#skip') }}
-        run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   discord_notify_failure:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
@@ -48,6 +43,15 @@ jobs:
           details: commit ${{ github.event.head_commit.url }} by ${{ github.triggering_actor }} broke the build
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+  deploy_to_flyio:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: deploy
+        if: ${{ github.event_name == 'push' && !contains(toJson(github.event.commits.*.message), '#skip') }}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
@@ -65,7 +69,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
   discord_notify_success:
-    needs: [tag_release]
+    needs: [deploy_to_flyio]
     runs-on: ubuntu-20.04
     steps:
       - name: Discord notify Success
