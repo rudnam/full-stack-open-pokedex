@@ -2,7 +2,7 @@ name: Periodic Health Check
 
 on:
   schedule:
-    - cron: '40 2 * * *'
+    - cron: '0 3 * * *'
 
 jobs:
   periodic_health_job:
@@ -14,14 +14,14 @@ jobs:
           url: https://silent-snow-6583.fly.dev/
       - name: Discord notify Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'pull_request' && failure() }}
+        if: failure()
         with:
           severity: error
           description: Periodic health check for https://silent-snow-6583.fly.dev/ failed.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Discord notify Success
         uses: rjstone/discord-webhook-notify@v1
-        if: ${{ github.event_name == 'pull_request' && success() }}
+        if: success()
         with:
           severity: info
           description: Periodic health check for https://silent-snow-6583.fly.dev/ was a success.
